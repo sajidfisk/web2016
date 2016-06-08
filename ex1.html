@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+<script src="ex1Model.js"></script>
+<script src="ex1Ctrl.js"></script>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+<!-- 
+	*******************************************************
+
+	               myApp begins
+
+	*******************************************************
+-->
+
+<div data-ng-app="myApp" data-ng-controller="myCtrl", data-ng-init="future=2025">
+<h1>Welcome to Fisk University</h1>
+
+
+First Name: <input type="text" ng-model="firstName"><br>
+Last Name: <input type="text" ng-model="lastName"><br>
+<br>
+<div style="background-color:{{myColor}}">
+Full Name: {{ firstName + " " + lastName }}
+
+<p>Fisk was established in {{established}}, which is {{year-established}} years ago; in {{future}} it would be <span ng-bind="future-established"></span> years old.</p>
+
+</div>
+
+<p>Select the background of the contents area</p>
+<input style="background-color:{{myColor}}" ng-model="myColor" value="{{myColor}}"
+
+<br>
+
+<p>The name of our leading student is {{person.firstName  + " " + person.lastName}}. She is freshmen, Psychology Major.</p> Here is the list of all students:
+<ul>
+	<li>{{students[0].firstName + " " + students[0].lastName}}</li>
+	<li>{{students[1].firstName + " " + students[1].lastName}}</li>
+	<li>{{students[2].firstName + " " + students[2].lastName}}</li>
+	<li>{{students[3].firstName + " " + students[3].lastName}}</li>
+	<li>{{students[4].firstName + " " + students[4].lastName}}</li>
+</ul>
+
+
+<h1>Computing Interest</h1>
+<table>
+<tr>
+<td align=right>Principal Value (pv)</td><td><input type="number" ng-model="pv"></td>
+</tr>
+<tr>
+<td align=right>Rate (rate)</td><td><input type="number" ng-model="rate"></td>
+</tr>
+<tr>
+<td align=right>Duration (years)</td><td><input type="number" ng-model="n"></td>
+</tr>
+<tr>
+	<td align=right>Interest</td>
+	<td>{{ pv *Math.pow(1+rate/1200,n*12) }}</td>
+</tr>
+</table>
+
+<!--
+	Using ng-repeat for Looping
+	Example 1: Students list
+	Example 2: Inventory List
+-->
+
+<h1>Looping with ng-repeat</h1>
+<ul>
+	<li ng-repeat="student in students">
+		{{ student.firstName + " " + student.lastName}}
+	</li>
+</ul>
+
+<h1>Inventory</h1>
+<table width="500" border="2">
+	<tr>
+		<td>ID</td>
+		<td>Price/Item</td>
+		<td>Quantity</td>
+		<td>Total Price</td>
+	</tr>
+	<tr ng-repeat="item in inventory">
+		<td>{{  item.id  }}</td>
+		<td>{{  item.price  }}</td>
+		<td>{{  item.quantity }}</td>
+		<td>{{  item.quantity*item.price  }}</td>
+	</tr>
+</ul>
+</table>
+
+
+<!--
+	Using Directives
+-->
+
+<h1>Using Directives</h1>
+<p>
+Here is summer2016 directive: <summer2016></summer2016>
+</p>
+
+<p>
+here is summer2016 directive in p tag (note that it is displayed in a separate paragraph): <p summer2016></p>
+</p>
+
+
+<h1>Validate User Input</h1>
+
+<form name="myForm">
+<p>
+Personal Email: 
+<input type="email" name="myAddress" ng-model="myAddress">
+<span ng-show="myForm.myAddress.$error.email">Not a valid e-mail address</span>
+</p>
+
+
+<p>
+Fisk Email: 
+<input type="email" name="fiskEmail" ng-model="fiskEmail" required>
+<p>Status:</p>
+<ul>
+<li>Valid: {{ myForm.fiskEmail.$valid  }} - 
+	<span ng-show="myForm.fiskEmail.$valid">Valid Text</span></li>
+<li>Email Error: {{ myForm.fiskEmail.$error.email  }} - 
+	<span ng-show="myForm.fiskEmail.$error.email">Email Error</span></li>
+<li>Dirty: {{ myForm.fiskEmail.$dirty  }} - 
+	<span ng-show="myForm.fiskEmail.$dirty">Dirty Text</span></li>
+<li>Touched: {{ myForm.fiskEmail.$touched  }}  - 
+	<span ng-show="myForm.fiskEmail.$touched">Touched Text</span></li>
+</ul>
+</p>
+
+</form>
+
+<p>Enter your email address in input field.
+
+</p>
+
+<h1>Examples of Scope and Root Scope</h1>
+<ul>
+<li>The myEvent variable from rootScope, {{  myEvent }} </li>
+<li>The myColor variable of scope (lightYellow) has priority over rootScope (blue) {{ myColor}}</li>
+</ul>
+
+<!-- 
+	*******************************************************
+
+     				Using Filters
+
+*******************************************************
+-->
+<h1>Using Filters</h1>
+
+<ul>
+	<li ng-repeat="student in students | orderBy: 'lastName'">
+		{{ (student.lastName | uppercase) + ", " + student.firstName}}
+	</li>
+</ul>
+
+<table width="500" border="2">
+	<tr>
+		<td>Index</td>
+		<td>ID</td>
+		<td>Price/Item</td>
+		<td>Quantity</td>
+		<td>Total Price</td>
+	</tr>
+	<tr ng-repeat="item in inventory">
+		<td>{{  $index+1 }}</td>
+		<td>{{  item.id  }}</td>
+		<td>{{  item.price | currency }}</td>
+		<td>{{  item.quantity }}</td>
+		<td>{{  (item.quantity*item.price) | currency  }}</td>
+	</tr>
+</ul>
+</table>
+
+<p>Type any text for search</p>
+
+<p><input type="text" ng-model="nameFilter"></p>
+<p>Adding a custom filter to trim text after given number of letters (e.g. 4). The trimText filter is applied to the student majors. We have added another custom filter, properCase, to convert text to proper case.</p>
+
+<table width="300" border=1>
+	<tr ng-repeat="student in students | orderBy: 'lastName' | filter: nameFilter">
+		<td>{{ student.lastName | uppercase }} </td>
+		<td>{{ student.firstName | properCase }} </td>
+		<td>{{ student.major | trimText:4 }}
+	</tr>
+</table>
+
+
+<!-- 
+	*******************************************************
+
+     				Angular Services
+
+*******************************************************
+-->
+<h1>Angular Services</h1>
+The absolute URL of this page is <a href="{{ myUrl }}">{{ myUrl}}</a>
+
+<p>Current time: <span class=quote>{{ theTime }}</span></p>
+
+<h2>A few famous quotes</h2>
+<p class="quote">{{ quote }}</p>
+<p>The above quotes are displayed using internval serivce.</p>
+
+<p><input type="number" ng-model="myNum"></p>
+<p>
+The hexadecimal value of {{ myNum }} is {{ myNum | hexFormat }}
+</p>
+
+
+<p>Select a quote</p>
+<select ng-model="selectedQuote" ng-options="x.author for x in quoteObjects">
+</select>
+
+<p><img src="images/{{ selectedQuote.image}}" width="200"></p>
+<p>{{ selectedQuote.author}}</p>
+<p>{{ selectedQuote.quote}}</p>
+
+<table>
+	<tr ng-repeat="quote in quoteObjects">
+		<td align=center>
+			<img src="images/{{ quote.image}}" width="200"></p>
+			<p>{{ quote.author}}</p>
+		</td>
+		<td width=300 align=center>
+			<p>{{ quote.quote}}</p>
+		</td>
+	</tr>
+</table>
+
+<!-- 
+	*******************************************************
+
+	                   myApp ends
+
+	******************************************************
+-->
+</div> <!-- end of myApp -->
+
+
+</body>
+</html>

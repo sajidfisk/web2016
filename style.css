@@ -1,0 +1,57 @@
+h1{
+	color: #00009f;
+	background-color: #cccccc;
+}
+
+li{
+	color: #555577;
+}
+
+a{
+	text-decoration: none;
+	color: #00007f;
+	background-color: yellow;
+}
+a:hover{
+	background-color: #00007f;
+	color: yellow;
+}
+
+.quote{
+	background-color: lightpink;
+	width: 500px;
+	height: 400px;
+	text-align: center;
+	vertical-align: middle;
+	font-size: xx-large;
+}
+
+
+
+table, th , td {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+}
+table tr:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+input.ng-dirty{
+	background-color: lightblue;
+}
+
+input.ng-touched {
+	background-color: lightyellow;
+}
+
+input.ng-invalid {
+	color: red;
+}
+
+input.ng-valid {
+	color: black;
+}
